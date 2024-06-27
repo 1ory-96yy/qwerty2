@@ -1,72 +1,50 @@
 #include <iostream>
-#include <string>
-#include <Windows.h>
+#include <fstream>
+
 using namespace std;
 
 class Student {
 private:
-    string lastName;
-    double averageGrade;
+    string surname;
+    double average_grade;
     bool scholarship;
 
 public:
-    Student(string lname, double avg) {
-        lastName = lname;
-        averageGrade = avg;
-        scholarship = (avg >= 4.5);
+    Student(string s, double avg) {
+        surname = s;
+        average_grade = avg;
+        scholarship = (average_grade >= 4.5);
     }
-
-    void printInfo() const {
-        cout << "Прізвище: " << lastName << endl;
-        cout << "Середній бал: " << fixed << averageGrade << endl;
-        cout << "Отримує стипендію: " << (scholarship ? "true" : "false") << endl;
-        cout << "--------------------------" << endl;
+    Student() {
+        surname = "";
+        average_grade = 0.0;
+        scholarship = false;
     }
-
-    string getLastName() const {
-        return lastName;
-    }
-
-    double getAverageGrade() const {
-        return averageGrade;
-    }
-
-    bool isScholarship() const {
-        return scholarship;
+    void display() {
+        cout << "Surname: " << surname << endl;
+        cout << "Average Grade: " << average_grade << endl;
+        cout << "Scholarship: " << (scholarship ? "true" : "false") << endl;
+        cout << endl;
     }
 };
 
 int main() {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-    const int maxSize = 100;
-    Student* students[maxSize];
-    int n = 0;
+    const int MAX_STUDENTS = 5;
+    Student students[MAX_STUDENTS];
+    for (int i = 0; i < MAX_STUDENTS; ++i) {
+        string surname;
+        double average_grade;
 
-    cout << "Введіть дані про студентів:" << endl;
-    cout << "(Прізвище Середній_бал)" << endl;
-    cout << "Введіть 'end' для завершення вводу." << endl;
+        cout << "Enter student's surname: ";
+        cin >> surname;
+        cout << "Enter student's average grade: ";
+        cin >> average_grade;
 
-    string lname;
-    double avg;
-
-    while (cin >> lname >> avg) {
-        if (lname == "end") {
-            break;
-        }
-        students[n] = new Student(lname, avg); 
-        n++;
-        if (n >= maxSize) {
-            cerr << "Перевищено максимальний розмір масиву студентів." << endl;
-            break;
-        }
+        students[i] = Student(surname, average_grade);
     }
-
-    for (int i = 0; i < n; ++i) {
-        students[i]->printInfo();
-    }
-    for (int i = 0; i < n; ++i) {
-        delete students[i];
+    cout << "List of students:" << endl;
+    for (int i = 0; i < MAX_STUDENTS; ++i) {
+        students[i].display();
     }
 
     return 0;
